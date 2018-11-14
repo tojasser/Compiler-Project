@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,7 +19,7 @@ public class Compiler {
     /**
      * @param args the command line arguments
      */
-    //static Stack<Integer> stack = new Stack<>()
+    static Stack<String> stackkk = new Stack<>();
     static String s = "";
     static int i = 0;
     static String stack = "0";
@@ -48,34 +47,79 @@ public class Compiler {
         s = read.next().toLowerCase().replaceAll("id", "x"); // don't forget to return ALL x to id !!
 
         s = s.concat("$");
+        stackkk.push("0");
 
-        String scell = a[Integer.parseInt(stack.substring(stack.length() - 1))][columNo(s.charAt(i))];
+        String newcell = a[Integer.parseInt(stackkk.peek())][columNo(s.charAt(i))];
 
         String s1;
-        
+
         while (true) {
 
-            String cell = a[Integer.parseInt(stack.substring(stack.length() - 1))][columNo(s.charAt(i))];
+            String cell = a[Integer.parseInt(stackkk.peek())][columNo(s.charAt(i))];
             if (cell.startsWith("S")) {
-                s1 = s.substring(0, 1);
-                s = s.substring(1);
-                stack = stack + s1;
-                stack += cell.substring(1);
+                stackkk.push(s.substring(1));
+                stackkk.push(cell.substring(1));
 
-            } else if (cell==("acc")) {
+//                
+//                s1 = s.substring(0, 1);
+//                s = s.substring(1);
+//                stack = stack + s1;
+//                stack += cell.substring(1);
+            } else if (cell == ("acc")) {
                 System.out.println("The statment id correct ");
                 break;
-            }
-            else if( cell == e){
+            } else if (cell == e) {
                 System.out.println("NOT CORRECT !!!!");
                 break;
-            }
-            else if( cell.startsWith("R")){
-                
+            } else if (cell.startsWith("R")) {
+                int ss = Integer.parseInt(cell.substring(1));
+                stackkk.push(reduce(ss));
+
+                String push1 = stackkk.pop(); // F
+                char n1 = push1.charAt(0);
+                String push2 = stackkk.pop(); //0
+                String cell2 = a[Integer.parseInt(stackkk.pop())][columNo(n1)];
+                stackkk.push(push2);
+                stackkk.push(push1);
+                stackkk.push(cell2);
+
             }
         }
+        s = read.next().toLowerCase().replaceAll("x", "id");
+
         System.out.println(stack);
         System.out.println(s);
+
+    }
+
+    public static String reduce(int x) {
+        switch (x) {
+            case 1:
+                delete(6);
+                return "S";
+            case 2:
+                delete(2);
+                return "S";
+            case 3:
+                delete(4);
+                return "L";
+            case 4:
+                delete(2);
+                return "L";
+            case 5:
+                delete(2);
+                return "R";
+
+        }
+        return "";
+    }
+
+    public static void delete(int x) {
+
+        for (int i = 0; i < x; i++) {
+            stackkk.pop();
+            //stack=stack.substring(0,stack.length()-1);
+        }
 
     }
 
