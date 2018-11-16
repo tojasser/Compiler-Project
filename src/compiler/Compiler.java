@@ -48,7 +48,7 @@ public class Compiler {
         input = input.replaceAll("id", "x");
         String cell = table[Integer.parseInt(stack.peek())][Coulmno(String.valueOf(input.charAt(0)))];
 
-        while (cell != "acc") {
+        while (true) {
 
             if (cell.startsWith("S")) {
                 String ns = input.substring(0, 1);
@@ -59,6 +59,11 @@ public class Compiler {
 
             if (cell == e) {
                 System.out.println("WRONG WORD!!, TRY AGIN");
+                break;
+            }
+            if (cell == "acc") {
+
+                System.out.println("Word is correct ,Willdone!!");
                 break;
             }
 
@@ -77,8 +82,6 @@ public class Compiler {
             cell = table[Integer.parseInt(stack.peek())][Coulmno(String.valueOf(input.charAt(0)))];
 
         }
-
-        System.out.println("Word is correct ,Willdone!!");
 
     }
 
